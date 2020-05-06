@@ -8,16 +8,16 @@ Vue.component('app-header', {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">                
                 <li class="nav-item active">
-                    <router-link id="home">Home<span class="sr-only">(current)</span></router-link>
+                    <router-link id="home_nav_bar">Home<span class="sr-only">(current)</span></router-link>
                 </li>
                 <li class="nav-item active">
-                    <router-link id="explore">Explore<span class="sr-only">(current)</span></router-link>
+                    <router-link id="explore_nav_bar">Explore<span class="sr-only">(current)</span></router-link>
                 </li>
                 <li class="nav-item active">
-                    <router-link id="profile">My Profile<span class="sr-only">(current)</span></router-link>
+                    <router-link id="profile_nav_bar">My Profile<span class="sr-only">(current)</span></router-link>
                 </li>
                 <li class="nav-item active">
-                    <router-link id="logout">Logout<span class="sr-only">(current)</span></router-link>
+                    <router-link id="logout_nav_bar">Logout<span class="sr-only">(current)</span></router-link>
                 </li>
             </ul>
         </div>
@@ -48,9 +48,9 @@ const loginPage = Vue.component('/login', {
         <div id="loginFormBox">
             <form id="loginForm">
                 <label>Username</label>
-                <input type="text"></input><br><br>
+                <input id="user_name" type="text"></input><br><br>
                 <label>Password</label>
-                <input type="password"></input><br><br>
+                <input id="_password" type="password"></input><br><br>
                 <button id="loginButton" type="submit" name="login">Login</button>
             </form>
         </div>
@@ -111,7 +111,7 @@ const newUserPage = Vue.component('/new_user', {
                 <label>Biography</label><br>
                 <input id="biography" type="text" name="biography"></input><br><br>
                 <label>Photo</label><br>
-                <input id="photo" type="file" name="photo"></input><br><br>
+                <input id="profile_photo" type="file" name="photo"></input><br><br>
                 <button id=registerButton type="submit"></button>
             </form>
         </div>
