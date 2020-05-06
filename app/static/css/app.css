@@ -1,0 +1,238 @@
+/*------------------------------
+NAVIGATION BAR
+------------------------------*/
+#photogram {
+  font-family: Monotype Corsiva;
+}
+
+nav {
+  background-color: #2A9DD1;
+  color: white;
+  font-family: Arial;
+}
+
+
+/*------------------------------
+LOGIN PAGE
+------------------------------*/
+#user_name, #_password {
+  width: 300px;
+  height: 50px;
+}
+
+#login {
+  background-color: #F4F0DF;
+  align-content: center;
+}
+
+#loginButton {
+  background-color: #1ADF23;
+  width: 300px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+#loginFormBox {
+  width: 400px;
+  height: 500px;
+  border-top: #C7C7C4;
+  border-right: #C7C7C4;
+  border-left: #9C9C9A;
+  border-bottom:#C7C7C4 solid 3px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+
+/*------------------------------
+HOME PAGE
+------------------------------*/
+#home {
+  background-color: #F4F0DF;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#homeImage {
+  width: 400px;
+  height: 500px;
+  border-top: #C7C7C4;
+  border-right: #C7C7C4;
+  border-left: #9C9C9A;
+  border-bottom:#C7C7C4 solid 3px;
+}
+
+#photogramLabel {
+  font-family: Monotype Corsiva;
+  font-size: 50px;
+  text-align: center;
+}
+
+#mainBox {
+  float: right;
+  width: 400px;
+  height: 500px;
+  border-top: #C7C7C4;
+  border-right: #C7C7C4;
+  border-left: #9C9C9A;
+  border-bottom:#C7C7C4 solid 3px;
+}
+
+#login_button, #register_button {
+  width: 100px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+#register_button {
+  background-color: #1ADF23;
+}
+
+#login_button {
+  float: right;
+  background-color: #2A9DD1;
+}
+
+/*------------------------------
+NEW USER REGISTRATION PAGE
+--------------------------------*/
+#new_user {
+  background-color: #F4F0DF;
+  align-content: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+#newUserFormBox {
+  width: 500px;
+  height: 1000px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-top: #C7C7C4;
+  border-right: #C7C7C4;
+  border-left: #9C9C9A;
+  border-bottom:#C7C7C4 solid 3px;
+}
+
+#registerButton, #username, #password, #first_name, #last_name, #email, #location {
+  width: 300px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+#registerButton {
+  background-color: #1ADF23;
+}
+
+#biography {
+  width: 300px;
+  height: 100px;
+}
+
+
+/*------------------------------
+EXPLORE PAGE
+------------------------------*/
+#explore {
+  background-color: #F4F0DF;
+  align-content: center;
+}
+
+#user_name {
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+#profilePic {
+  width: 10px;
+  height: 10px;
+}
+
+#imagePosted {
+  width: 500px;
+  height: 350px;
+}
+
+#imageCaption {
+  text-align: justify;
+}
+
+#likeIcon {
+  width: 8px;
+  height: 8px;
+}
+
+#datePosted {
+  float: right;
+}
+
+#user_name, #datePosted {  
+  font-weight: bold;
+}
+
+#new_postButton {
+  background-color: #2A9DD1;
+  border-radius: 5px;
+}  
+
+#exploreMainBox {
+  width: 500px;
+  height: 700px;
+}
+
+#rightButtonDiv {
+  float: right;
+}
+
+
+/*------------------------------
+USER PROFILE PAGE
+------------------------------*/
+#user_profile {
+  background-color: #F4F0DF;
+}
+
+
+/*------------------------------
+NEW POST PAGE
+------------------------------*/
+#caption {
+  width: 300px;
+  height: 90px;
+  border-radius: 5px;
+}
+
+#new_post {
+  background-color: #F4F0DF;
+  align-content: center;
+}
+
+#newPostSubmitButton {
+  background-color: #1ADF23;
+  border-radius: 5px;
+  height: 50px;
+  width: 300px;
+}
+
+#newPostFormBox {
+  width: 400px;
+  height: 500px;
+  border-top: #C7C7C4;
+  border-right: #C7C7C4;
+  border-left: #9C9C9A;
+  border-bottom:#C7C7C4 solid 3px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
