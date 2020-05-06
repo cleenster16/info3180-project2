@@ -1,8 +1,21 @@
+
+# ----------------------
+# Flask
+# ----------------------
 click==7.1.1
-Flask==1.1.2
+flask
 Flask-WTF==0.14.3
 itsdangerous==1.1.0
+Flask-SQlAlchemy
+Flask-Migrate
+psycopg2
+Flask-Script
+pyjwt
 Jinja2==2.11.1
 MarkupSafe==1.1.1
 Werkzeug==1.0.1
 WTForms==2.2.1
+# ----------------------
+# Production Server
+# ----------------------
+gunicorn==19.6.0
