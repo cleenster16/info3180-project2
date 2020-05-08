@@ -3,6 +3,7 @@ from app import app, db, filefolder
 from flask import render_template, request, redirect, url_for, flash, jsonify, session
 from werkzeug.utils import secure_filename
 
+
 @app.route('/')
 def index():
     """Render website's initial page and let VueJS take over."""
