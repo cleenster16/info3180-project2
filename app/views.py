@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 def index():
     """Render website's initial page and let VueJS take over."""
     return render_template('index.html')
+    
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
