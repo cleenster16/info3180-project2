@@ -230,7 +230,7 @@ const explorePage = Vue.component('/explore', {
                         clicked = true;
 
                         fetch("/api/posts" + id + "/like",{
-                            method: 'POST'
+                            method: 'POST',
                             headers: {
                                 'X-CSRFToken': token,
                                 'Authorization': 'Bearer' + localStorage.getItem('token')
@@ -280,7 +280,7 @@ const explorePage = Vue.component('/explore', {
             return response.json();
         })
         .then(function(jsonResponse){
-            //display a succes message
+            //display a success message
             console.log(jsonResponse);
 
             let p = jsonResponse.posts;
