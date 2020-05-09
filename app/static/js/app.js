@@ -8,19 +8,23 @@ Vue.component('app-header', {
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">                
+            <ul class"navbar-nav" v-if="user">                
                 <li class="nav-item active">
-                    <router-link id="home_nav_bar">Home<span class="sr-only">(current)</span></router-link>
+                    <router-link id="home_nav_bar" class="nav-link" v-bind:to="/">Home<span class="sr-only">(current)</span></router-link>
+                </li>
+            </ul>
+            <ul class="navbar-nav" v-else>
+                <li class="nav-item active">
+                    <router-link id="logout_nav_bar" v-bind:to="/logout">Logout<span class="sr-only">(current)</span></router-link>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <router-link id="explore_nav_bar" v-bind:to="/explore">Explore<span class="sr-only">(current)</span></router-link>
                 </li>
                 <li class="nav-item active">
-                    <router-link id="explore_nav_bar">Explore<span class="sr-only">(current)</span></router-link>
-                </li>
-                <li class="nav-item active">
-                    <router-link id="profile_nav_bar">My Profile<span class="sr-only">(current)</span></router-link>
-                </li>
-                <li class="nav-item active">
-                    <router-link id="logout_nav_bar">Logout<span class="sr-only">(current)</span></router-link>
-                </li>
+                    <router-link id="profile_nav_bar" v-bind:to="'/users/' + user_id">My Profile<span class="sr-only">(current)</span></router-link>
+                </li>                
             </ul>
         </div>
     </nav>
