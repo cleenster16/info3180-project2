@@ -9,7 +9,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired(message="Enter password")])
 
 class PostsForm(FlaskForm):
-    photo = FileField('Photo', FileRequired("Please add a file"), FileAllowed(['png', 'jpg'], 'Images only!')])
+    photo = FileField('Photo', validators=[FileRequired("Please add a file"), FileAllowed(['png', 'jpg'], 'Images only!')])
     caption = TextAreaField('Caption', validators=[InputRequired()])
 
 class RegistrationForm(FlaskForm):
@@ -20,4 +20,4 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(message="Email is required"), Email(message="Only Emails")])
     location = TextAreaField('Location', validators=[InputRequired()])
     biography = TextAreaField('Biography', validators=[InputRequired()])
-    photo = FileField('Photo', FileAllowed(['png', 'jpg'], 'Images only!'), FileRequired("Please add a file"))
+    photo = FileField('Photo', validators=[FileAllowed(['png', 'jpg'], 'Images only!'), FileRequired("Please add a file")])

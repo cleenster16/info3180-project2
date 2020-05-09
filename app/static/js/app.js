@@ -1,4 +1,4 @@
-let event = new Vue();
+/*Application JavaScript*/
 
 Vue.component('app-header', {
     template: `
@@ -66,7 +66,7 @@ Vue.component('app-footer', {
     `
 });
 
-const loginPage = Vue.component('/login', {
+const login_page = Vue.component('/login', {
     template: `
     <div>
         <div v-if = "visible">
@@ -131,7 +131,7 @@ const loginPage = Vue.component('/login', {
     
 });
 
-const newPostPage = Vue.component('/new_post', {
+const new_post_page = Vue.component('/new_post', {
     template: `
     <div id="new_post">
         <h2>New Post<h2><br>
@@ -148,7 +148,7 @@ const newPostPage = Vue.component('/new_post', {
     `
 });
 
-const homePage = Vue.component('/home', {
+const home_page = Vue.component('/home', {
     template: `
     <div id="home">
         <div id="mainBox>
@@ -167,7 +167,7 @@ const homePage = Vue.component('/home', {
       }
 });
 
-const newUserPage = Vue.component('/new_user', {
+const register_page = Vue.component('/register', {
     template: `
     <div id="new_user">
         <h2>Register</h2>
@@ -196,7 +196,7 @@ const newUserPage = Vue.component('/new_user', {
     `
 });
 
-const explorePage = Vue.component('/explore', {
+const explore_page = Vue.component('/explore', {
     template: `
     <div id="explore">
         <div ="rightButtonDiv>
@@ -316,4 +316,41 @@ const explorePage = Vue.component('/explore', {
 
         }
     
+})
+
+
+// Define Routes
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        { path: "/", component: Home },
+        // Catch the file home route
+
+        { path: "/register", component: register_page },
+        // Catch the file register route
+
+        { path: "/login", component: login_page },
+        // Catch the file login route
+
+        { path: "/logout", component: logout },
+        // Catch the file register route
+
+        { path: "/explore", component: explore_page },
+        // Catch the file explore route
+
+        { path: "/posts/new", component: new_post_page },
+        // Catch the file register route
+
+        { path: "/users/:user_id", component: profile_page },
+        // Catch the file register route
+
+        // This is a catch all route in case none of the above matches
+        { path: "*", component: NotFound }
+    ]
+});
+
+// Instantiate our main Vue Instance
+let app = new Vue({
+    el: "#app",
+    router
 });

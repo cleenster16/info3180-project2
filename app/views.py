@@ -12,6 +12,54 @@ def index():
     """Render website's initial page and let VueJS take over."""
     return render_template('index.html')
 
+
+@app.route('/api/users/register', methods=['POST'])
+def register():
+    """Accepts user information and saves it to the database"""
+    return render_template('index.html')
+
+
+@app.route('/api/auth/login', methods=['POST'])
+def login():
+    """Accepts login credentials as username and password"""
+    return render_template('index.html')
+
+
+@app.route('/api/auth/logout', methods=['GET'])
+def logout():
+    """Logout a user"""
+    return render_template('index.html')
+
+
+@app.route('/api/users/<user_id>/posts', methods=['POST'])
+def login():
+    """Used for adding posts to the user's feed"""
+    return render_template('index.html')
+
+
+@app.route('/api/users/<user_id>/posts', methods=['GET'])
+def login():
+    """Returns a user's posts"""
+    return render_template('index.html')
+
+
+@app.route('/api/users/<user_id>/follow', methods=['POST'])
+def login():
+    """Create a follow relationship between the current user and the target user."""
+    return render_template('index.html')
+
+
+@app.route('/api/posts', methods=['GET'])
+def login():
+    """Returns all posts for all users"""
+    return render_template('index.html')
+
+
+@app.route('/api/posts/<post_id>/like', methods=['GET'])
+def login():
+    """Set a like on the current Post by the logged in User"""
+    return render_template('index.html')
+
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
     """Send your static text file."""
