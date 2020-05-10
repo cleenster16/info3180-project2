@@ -73,7 +73,8 @@ const login_page = Vue.component('/login', {
             <div v-if = "errors" class = "alert alert danger">
                  <li v-for = "error in errors">{{error}}</li>
              </div>
-             <div v-else class = "alert alert-success">  Logged in Successfully!.</div>
+             <div v-else class = "alert alert-success">  Logged in Successfully!.
+             </div>
         </div>
 
         <form @submit.prevent = "login(), visible = true" id = "loginForm">
@@ -316,7 +317,7 @@ const explore_page = Vue.component('/explore', {
 
         }
     
-})
+});
 
 
 // Define Routes
