@@ -3,23 +3,23 @@ let event = new Vue();
 Vue.component('app-header', {
     template: `
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <a id="photogram" class="navbar brand" href="#"><img src="camera-icon.png"></img>Photogram</a>
+        <a id="photogram" class="navbar-brand" href="#">Photogram</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">                
                 <li class="nav-item active">
-                    <router-link id="home_nav_bar">Home<span class="sr-only">(current)</span></router-link>
+                    <router-link to="/" class="nav-link">Home</router-link>
                 </li>
-                <li class="nav-item active">
-                    <router-link id="explore_nav_bar">Explore<span class="sr-only">(current)</span></router-link>
+                <li class="nav-item">
+                    <router-link to="/explore" class="nav-link">Explore</router-link>
                 </li>
-                <li class="nav-item active">
-                    <router-link id="profile_nav_bar">My Profile<span class="sr-only">(current)</span></router-link>
+                <li class="nav-item">
+                    <router-link to="/" class="nav-link">My Profile</router-link>
                 </li>
-                <li class="nav-item active">
-                    <router-link id="logout_nav_bar">Logout<span class="sr-only">(current)</span></router-link>
+                <li class="nav-item">
+                    <router-link to="/logout" class="nav-link">Logout</router-link>
                 </li>
             </ul>
         </div>
@@ -62,28 +62,38 @@ Vue.component('app-footer', {
     `
 });
 
-const loginPage = Vue.component('/login', {
+const loginPage = Vue.component('login', {
     template: `
     <div>
+        <h2>Login<h2>
         <div v-if = "visible">
             <div v-if = "errors" class = "alert alert danger">
                  <li v-for = "error in errors">{{error}}</li>
              </div>
-             <div v-else class = "alert alert-success">  Logged in Successfully!.</div>
+             <div v-else class = "alert alert-success">
+                <p>Logged in Successfully!.</p>
+             </div>
         </div>
-
-        <form @submit.prevent = "login(), visible = true" id = "loginForm">
-        <div id="login">
-        <h2>Login<h2><br>
-        <div id="loginFormBox">
-            <form id="loginForm">
+        <form method="POST" @submit.prevent="login" visible="true" id="loginForm">
+            <div>
                 <label>Username</label>
                 <input id="user_name" type="text"></input><br><br>
                 <label>Password</label>
                 <input id="_password" type="password"></input><br><br>
                 <button id="loginButton" type="submit" name="login">Login</button>
-            </form>
-        </div>
+
+                <div class="form-group">
+                    {{ form.username.label }}
+                    {{ form.username(class='form-control', placeholder="Enter your username") }}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label }}
+                    {{ form.password(class='form-control') }}
+                </div>
+                <button type="submit" name="submit" class="btn btn-primary btn-block">Log in</button>
+
+            </div>
+        </form>
     </div>
     `,
 
@@ -127,7 +137,7 @@ const loginPage = Vue.component('/login', {
     
 });
 
-const newPostPage = Vue.component('/new_post', {
+const newPostPage = Vue.component('new_post', {
     template: `
     <div id="new_post">
         <h2>New Post<h2><br>
@@ -144,7 +154,7 @@ const newPostPage = Vue.component('/new_post', {
     `
 });
 
-const homePage = Vue.component('/home', {
+const homePage = Vue.component('home', {
     template: `
     <div id="home">
         <div id="mainBox>
@@ -163,7 +173,7 @@ const homePage = Vue.component('/home', {
       }
 });
 
-const newUserPage = Vue.component('/new_user', {
+const newUserPage = Vue.component('new_user', {
     template: `
     <div id="new_user">
         <h2>Register</h2>
@@ -192,7 +202,7 @@ const newUserPage = Vue.component('/new_user', {
     `
 });
 
-const explorePage = Vue.component('/explore', {
+const explorePage = Vue.component('explore', {
     template: `
     <div id="explore">
         <div ="rightButtonDiv>
@@ -312,4 +322,32 @@ const explorePage = Vue.component('/explore', {
 
         }
     
+});
+
+const NotFound = Vue.component('not-found', {
+    template: `
+    <div>
+        <h1>404 - Not Found</h1>
+    </div>
+    `,
+    data: function () {
+        return {}
+    }
+})
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        { path: "/", component: homePage },
+        { path: "/login", component: loginPage },
+        { path: "/new_user", component: newUserPage },
+        { path: "/new_post", component: newPostPage },
+        { path: "/explore", component: explorePage },
+        { path: "*", component: NotFound },
+    ]
+});
+
+let app = new Vue({
+    el: "#app",
+    router
 });

@@ -3,12 +3,10 @@ from app import app, db, filefolder
 from flask import render_template, request, redirect, url_for, flash, jsonify, session
 from werkzeug.utils import secure_filename
 
-
-@app.route('/')
-def index():
-    """Render website's initial page and let VueJS take over."""
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path):
     return render_template('index.html')
-    
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
