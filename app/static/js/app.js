@@ -1,4 +1,4 @@
-let event = new Vue();
+// let event = new Vue();
 
 Vue.component('app-header', {
     template: `
@@ -62,6 +62,25 @@ Vue.component('app-footer', {
     `
 });
 
+const homePage = Vue.component('home', {
+    template: `
+    <div id="home">
+        <div id="mainBox">
+            <p id="photogramLabel">Photogram</p>
+            <hr>
+            <p>Share photos of your favourite moments with friends, famiy and the world.</p><br><br>
+            <button id="login_button" type="submit" >Login</button>
+            <button id="register_button" type="submit" v-on:click="register()">Register</button>
+        </div>            
+        <img src="/static/icons/Document.png" id="homeImage"></img>
+    </div>
+    `,
+
+      data: function(){
+            return{}
+      }
+});
+
 const loginPage = Vue.component('login', {
     template: `
     <div>
@@ -75,24 +94,15 @@ const loginPage = Vue.component('login', {
              </div>
         </div>
         <form method="POST" @submit.prevent="login" visible="true" id="loginForm">
-            <div>
-                <label>Username</label>
-                <input id="user_name" type="text"></input><br><br>
-                <label>Password</label>
-                <input id="_password" type="password"></input><br><br>
-                <button id="loginButton" type="submit" name="login">Login</button>
-
-                <div class="form-group">
-                    {{ form.username.label }}
-                    {{ form.username(class='form-control', placeholder="Enter your username") }}
-                </div>
-                <div class="form-group">
-                    {{ form.password.label }}
-                    {{ form.password(class='form-control') }}
-                </div>
-                <button type="submit" name="submit" class="btn btn-primary btn-block">Log in</button>
-
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input name="username" id="username"></input>
             </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password"></input>
+            </div>
+            <button type="submit" name="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
     </div>
     `,
@@ -154,23 +164,66 @@ const newPostPage = Vue.component('new_post', {
     `
 });
 
-const homePage = Vue.component('home', {
+const registerPage = Vue.component('/register', {
     template: `
-    <div id="home">
-        <div id="mainBox>
-            <p id="photogramLabel"><img src="camera-icon.png"></img>Photogram</p>
-            <hr>
-            <p>Share photos of your favourite moments with friends, famiy and the world.</p><br><br>
-            <button id="login_button" type="submit">Login</button>
-            <button id="register_button" type="submit">Register</button>
-        </div>            
-        <img id="homeImage" src="Document.png"></img>
+    <div id="new_user">
+        <h2>Register</h2>
+        <div id="newUserFormBox">
+            <form id="registerForm" method="POST" @submit.prevent="register" enctype="multipart/form-data" class="">
+                <label for="username">Username</label><br>
+                <input id="username" type="text" name="username"></input><br><br>
+                <label for="password">Password</label><br>
+                <input id="password" type="password" name="password"></input><br><br>
+                <label for="first_name">First Name</label><br>
+                <input id="first_name" type="text" name="first_name"></input><br><br>
+                <label for="last_name">Last Name</label><br>
+                <input id="last_name" type="text" name="last_name"></input><br><br>
+                <label for="email">Email</label><br>
+                <input id="email" type="email" name="email"></input><br><br>
+                <label for="location">Location</label><br>
+                <input id="location" type="text" name="location"></input><br><br>
+                <label for="biography">Biography</label><br>
+                <input id="biography" type="text" name="biography"></input><br><br>
+                <label for="profile_photo">Photo</label><br>
+                <input id="profile_photo" type="file" name="photo"></input><br><br>
+                <button id=registerButton type="submit"></button>
+            </form>
+        </div>
     </div>
     `,
+    methods: {
+        register: function(){
+            let self = this;
+            let registerForm = document.getElementById('registerForm');
+            let form_data = new FormData(registerForm);
 
-      data: function(){
-            return{}
-      }
+            self.message = "";
+            self.errors = [];
+            fetch("/api/register", {
+                method: 'POST',
+                body : form_data,
+                headers: {
+                    'X-CSRFToken': token
+                },
+                credentials: 'same-origin'
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (jsonResponse) {
+                    // display a success message
+                    if (jsonResponse.errors) {
+                        self.errors = jsonResponse.errors;
+                    } else {
+                        self.message = jsonResponse.message;
+                    }
+                    console.log(jsonResponse);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    },
 });
 
 const newUserPage = Vue.component('new_user', {
@@ -339,10 +392,16 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         { path: "/", component: homePage },
+        { path: "/register", component: registerPage },
         { path: "/login", component: loginPage },
-        { path: "/new_user", component: newUserPage },
-        { path: "/new_post", component: newPostPage },
+        // { path: "/logout", component: logoutPage },
         { path: "/explore", component: explorePage },
+        // { path: "/users/:user_id", component: profilePage },
+        // { path: "/posts/new", component: new_post_page },
+
+        // { path: "/new_user", component: newUserPage },
+        // { path: "/new_post", component: newPostPage },
+        
         { path: "*", component: NotFound },
     ]
 });
