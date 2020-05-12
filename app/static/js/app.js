@@ -69,8 +69,8 @@ const homePage = Vue.component('home', {
             <p id="photogramLabel">Photogram</p>
             <hr>
             <p>Share photos of your favourite moments with friends, famiy and the world.</p><br><br>
-            <button id="login_button" type="submit" >Login</button>
-            <button id="register_button" type="submit" v-on:click="register()">Register</button>
+            <router-link to="/login"><input id="login_button" type="submit" value="Login"></router-link>
+            <router-link to="/register>"<input id="register_button" type="submit" value="Register"></router-link>
         </div>            
         <img src="/static/icons/Document.png" id="homeImage"></img>
     </div>
