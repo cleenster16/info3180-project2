@@ -1,10 +1,12 @@
 import os
-from app import app, db, filefolder, token_key, iconFolder
+from app import app, db, filefolder, token_key, iconFolder, login_manager
 from app.models import Posts, Users, Likes, Follows
 from app.forms import LoginForm, RegistrationForm, PostsForm
 import datetime
-from flask import render_template, request, redirect, url_for, flash, jsonify, session
+from flask import g, render_template, request, redirect, url_for, flash, jsonify
+from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
+from werkzeug.security import check_password_hash
 
 import jwt
 
@@ -46,45 +48,205 @@ def register():
     """Accepts user information and saves it to the database"""
     form = RegistrationForm()
     if request.method == "POST" and form.validate_on_submit():
-        username = request.form['username']
-        password = request.form['password']
-        firstname = request.form['first_name']
-        lastname = request.form['last_name']
-        email = request.form['email']
-        location = request.form['location']
-        biography = request.form['biography']
-        photo = request.file['profile_photo']
-        date_now = datetime.datetime.now()
-        photo_file = secure_filename(photo.photo_file)
-        user = Users(firstname = firstname, lastname = lastname, email = email, location = location, biography = biography, profile_photo = photo, joined_on = date_now, username = username, password = password)
-        db.session.add(user)
-        db.session.commit()
-        photo.save(os.path.join(filefolder, photo_file))
-        info = [{"message": "User successfully registered"}]
-        return jsonify(result=info)
+        username = form.username.data
+        password = form.password.data
+        firstname = form.first_name.data
+        lastname = form.last_name.data
+        email = form.email.data
+        location = form.location.data
+        biography = form.biography.data
+        photo = form.photo.data
+        photoPath = assignFilename(photo)
+
+        try:
+            user = Users(username, password, firstname, lastname, email, location, biography, photo, joined_on)
+            if user is not None:
+                db.session.add(user)
+                db.session.commit()
+                uploadFile(photo)
+                info = [{"message": "User successfully registered"}]
+                return jsonify(result=info) 201
+
+        except Exception as e:
+            print(e)
+            db.session.rollback()
+            error = "Server Error. Try again."
+            return jsonify(error=error), 401
+
     all_errors = form_errors(form)
-    error = [{'error': all_errors}]
-    return jsonify(errors=error)
+    return jsonify(errors=all_errors)
 
 @app.route('/api/auth/login', methods=['POST'])
 def login():
     """Accepts login credentials as username and password"""
     form = LoginForm()
     if request.method == "POST" and form.validate_on_submit():
-        username = request.form['user_name']
-        password = request.form['password']
 
-        user = Users.query.filter_by(username = username, password = password).first()
-        if user is None:
-            return jsonify(errorM="Incorrect username or password")
+        username = form.username.data
+        password = form.password.data
 
-        ids = {'user_id': user.id}
-        token = jwt.encode(ids, token_key)
-        session['userid'] = user.id;        
-        return jsonify(info={'token': token, 'userid': user.id}, message = "User logged in!")
+        user = db.session.query(Users).filter_by(username = username).first()
+        if check_password_hash(user.password, password):
+            login_user(user)
+
+            ids = {'user' : user.username}
+            jwt_token = jwt.encode(ids, app.config['SECRET_KEY'], algorithm = 'HS256').decode('utf-8')
+        
+            success = "User successfully logged in."
+            return jsonify(message=success, token=jwt_token, user_id=user.id)
+
+        error = "Incorrect username or password."
+        return jsonify(error=error), 401
+
     all_errors = form_errors(form)
-    error = [{'error': all_errors}]
-    return jsonify(errors=error)
+    return jsonify(errors=all_errors)
+
+@app.route('/api/auth/logout', methods=['GET'])
+def logout():
+    logout_user()
+
+    success = "User successfully logged out."
+    return jsonify(message=success)
+
+@app.route('api/users/<user_id>', methods=['GET'])
+@auth_required
+def userProfile(user_id):
+    try:
+        user = db.session.query(Users).filter_by(id=user_id).first()
+        #check if the current user(signed in) is following the user of the profile being viewed
+        isFollowing = current_user.id in [ follower.follower_id for follower in user.followers]
+
+        current = {"id": user.id, "username": user.username, "firstname": user.firstname, 
+        "lastname": user.lastname, "email": user.email, "location": user.location, 
+        "biography": user.biography, "profile_photo": os.path.join('./static/uploads', user.profile_photo), 
+        "joined": user.joined_on.strftime("%b %Y"), "isFollowing": isFollowing, "posts": []}
+
+        return jsonify(user=current)
+
+    except Exception as e:
+        print(e)
+        error = "internal server error"
+        return jsonify(error=error), 401
+
+@app.route('api/users/<user_id>/posts', methods=['POST','GET'])
+@auth_required
+def userPosts(user_id):
+    form = PostsForm()
+    if request.method == "POST" and form.validate_on_submit() == True:
+        try:
+            caption = form.caption.data
+            photo = assignPath(form.photo.data)
+            post = Posts(user_id, photo, caption)
+            db.session.add(post)
+            db.session.commit()
+            
+            #Flash message to indicate a post was added successfully
+            success = "Successfully created a new post"
+            return jsonify(message=success), 201
+        except Exception as e:
+            print(e)
+            
+            error = "Internal server error"
+            return jsonify(error=error), 401
+        
+    else:
+        try:
+            #Gets the current user to add/display posts to
+            userPosts = db.session.query(Posts).filter_by(user_id=user_id).all()
+            
+            posts = []
+            for post in userPosts:
+                p = {"id": post.id, "user_id": post.user_id, "photo": './static/uploads', post.photo), "description": post.caption, "created_on": post.created_on.strftime("%d %b %Y")}
+                posts.append(p)
+            
+            return jsonify(posts=posts)
+        except Exception as e:
+            print(e)
+            
+            error = "Internal server error"
+            return jsonify(error=error), 401
+            
+    #Flash message to indicate an error occurred
+    failure = "Failed to create/display posts"
+    return jsonify(error=failure), 401
+
+@app.route('api/users/<user_id>/follow', methods=['POST', 'GET'])
+@auth_required
+def userFollows(user_id):
+    if request.method == 'POST':
+        try:
+            id = current_user.id
+            follow = Follows(id, user_id)
+            db.session.add(follow)
+            db.session.commit()
+            
+            #Flash message to indicate a successful following
+            success = "You are now following that user"
+            return jsonify(message=success), 201
+        except Exception as e:
+            print(e)
+            
+            #Flash message to indicate that an error occurred
+            failure = "Internal error. Failed to follow user"
+            return jsonify(error=failure), 401
+    else:
+        try:
+            followers = db.session.query(Follows).filter_by(user_id=user_id).all()
+            return jsonify(followers=len(followers)), 201
+        except Exception as e:
+            print(e)
+            
+            error = "Internal server error!"
+            return jsonify(error=error), 401
+
+@app.route('api/posts', methods=['GET'])
+@auth_required
+def allPosts():
+    try:
+        posts = []
+        userPosts = db.session.query(Posts).order_by(Posts.created_on.desc()).all()
+    
+        for post in userPosts:
+
+            likes = [like.user_id for like in post.likes]
+            isLiked = current_user.id in likes
+            p = {"id": post.id, "user_id": post.user_id, "photo": os.path.join(app.config['GET_FILE'], post.photo), "caption": post.caption, "created_on": post.created_on.strftime("%d %b %Y"), "likes": len(post.likes), "isLiked": isLiked}
+            posts.append(p)
+        return jsonify(posts=posts), 201
+    except Exception as e:
+        print(e)
+        
+        error = "Internal server error"
+        return jsonify(error=error), 401
+
+@app.route("/api/posts/<post_id>/like", methods=["POST"])
+@requires_auth
+def likePost(post_id):
+    post = db.session.query(Posts).filter_by(id=post_id).first()
+    if current_user.is_authenticated():
+        id = current_user.id
+        like = Likes(id, post_id)
+        db.session.add(like)
+        db.session.commit()
+        return jsonify(message="Post Liked!", likes=len(post.likes)), 201
+    
+    #Flash message to indicate that an error occurred
+    failure = "Failed to like post"
+    return jsonify(error=failure)
+
+###
+# Helper Functions
+###
+
+#Assign a filename to a file
+def assignFilename(_file):
+    filename = secure_filename(_file.filename)
+    return filename
+
+#Save a file to the uploads folder
+def uploadFile(_file):
+    _file.save(os.path.join(app.config['UPLOAD_FOLDER'], securefilename(_file)))
+
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
@@ -106,7 +268,6 @@ def send_text_file(file_name):
     """Send your static text file."""
     file_dot_text = file_name + '.txt'
     return app.send_static_file(file_dot_text)
-
 
 @app.after_request
 def add_header(response):

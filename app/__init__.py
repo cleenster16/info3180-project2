@@ -1,4 +1,5 @@
 from flask import Flask
+from flask-login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 
@@ -13,6 +14,10 @@ app.config['ICONS_FOLDER'] = '.app/static/icons'
 csrf = CSRFProtect(app)
 
 db = SQLAlchemy(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 app.config.from_object(__name__)
 filefolder = app.config['UPLOAD_FOLDER']
