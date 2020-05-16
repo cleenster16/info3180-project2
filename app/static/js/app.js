@@ -161,8 +161,45 @@ const newPostPage = Vue.component('new_post', {
             </form>
         </div>
     </div>
-    `
+    `,
+    
+    data : function(){
+      return {
+        error: null,
+        visible: false
+      }
+    },
+    
+    methods : {
+      post : function(){
+        let self = this;
+        let postForm = document.getElementById('post-form');
+        let form_data = new FormData(postForm);
+        fetch("/api/users/" + this.$parent.userID + "/posts", {
+        method: 'POST',
+        body : form_data,
+        headers: {
+            'X-CSRFToken': token,
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            credentials: 'same-origin'
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonResponse) {
+        // display a success message
+          if (jsonResponse.error == true) {self.error = jsonResponse.message;}
+          console.log(jsonResponse);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+      }
+    }
 });
+
+
 
 const registerPage = Vue.component('/register', {
     template: `
