@@ -64,7 +64,7 @@ const homePage = Vue.component('home', {
           {{ notifs }}
         </div>
         <div class="col-sm-5 ml-5 mr-3 border-top rounded no-padding">
-          <img src="/static/icons/Document.png" alt="Photogram homepage photo" class="img-responsive" width="100%"/>
+          <img src="/static/icons/home.jpg" alt="Photogram homepage photo" class="img-responsive" width="100%"/>
         </div>
         <div class="col-sm-5 bg-white border-top rounded">
           <div>
@@ -100,35 +100,35 @@ const registerPage = Vue.component('register', {
           <div class="shadow-lg border-top rounded bg-white shadow">
             <form id="registerForm" method="post" enctype="multipart/form-data" @submit.prevent="registerUser" class="col-md-12" style="padding: 15px 15px 30px 15px;">
               <div class="form-group">
-                <label class="font-weight-bold"> Username </label>
+                <label class="font-weight-bold">Username</label>
                 <input type="text" name="username" class="form-control">
               </div>
               <div class="form-group">
-                <label class="font-weight-bold"> Password </label>
+                <label class="font-weight-bold">Password</label>
                 <input type="password" name="password" class="form-control">
               </div>
               <div class="form-group">
-                <label class="font-weight-bold"> Firstname </label>
+                <label class="font-weight-bold">Firstname</label>
                 <input type="text" name="first_name" class="form-control">
               </div>
               <div class="form-group">
-                <label class="font-weight-bold"> Lastname </label>
+                <label class="font-weight-bold">Lastname</label>
                 <input type="text" name="last_name" class="form-control">
               </div>
               <div class="form-group">
-                <label class="font-weight-bold"> Email </label>
+                <label class="font-weight-bold">Email</label>
                 <input type="text" name="email" class="form-control">
               </div>
               <div class="form-group">
-                <label class="font-weight-bold"> Location </label>
+                <label class="font-weight-bold">Location</label>
                 <input type="text" name="location" class="form-control">
               </div>
               <div class="form-group">
-                <label class="font-weight-bold"> Biography </label>
+                <label class="font-weight-bold">Biography</label>
                 <textarea class="form-control" name="biography" rows="3"></textarea>
               </div>
               <div class="form-group">
-                <label class="font-weight-bold"> Photo </label>
+                <label class="font-weight-bold">Photo</label>
                 <input type="file" name="photo" class="form-control-file">
               </div>
               <input type="submit" value="Register" name="register" class="btn btn-color btn-block font-weight-bold">

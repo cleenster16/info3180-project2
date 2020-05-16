@@ -1,238 +1,75 @@
-/*------------------------------
-NAVIGATION BAR
-------------------------------*/
-#photogram {
-  font-family: Monotype Corsiva;
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+
+html{
+  height: 100%;
+  margin: 0;
 }
 
-nav {
-  background-color: #2A9DD1;
-  color: white;
-  font-family: Arial;
+body {
+  padding-top: 5rem;
+  background-color: #f5efe6;
 }
 
-
-/*------------------------------
-LOGIN PAGE
-------------------------------*/
-#user_name, #_password {
-  width: 300px;
-  height: 50px;
+.test{
+  min-height: 100%;
 }
 
-#login {
-  background-color: #F4F0DF;
-  align-content: center;
-}
-
-#loginButton {
-  background-color: #1ADF23;
-  width: 300px;
-  height: 50px;
-  border-radius: 5px;
-}
-
-#loginFormBox {
-  width: 400px;
-  height: 500px;
-  border-top: #C7C7C4;
-  border-right: #C7C7C4;
-  border-left: #9C9C9A;
-  border-bottom:#C7C7C4 solid 3px;
-  padding-top: 50px;
+.container{
+  padding: 20px;
   padding-bottom: 50px;
-  padding-left: 30px;
-  padding-right: 30px;
 }
 
-
-/*------------------------------
-HOME PAGE
-------------------------------*/
-#home {
-  background-color: #F4F0DF;
-  padding-top: 80px;
-  padding-bottom: 80px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-#homeImage {
-  width: 400px;
-  height: 500px;
-  border-top: #C7C7C4;
-  border-right: #C7C7C4;
-  border-left: #9C9C9A;
-  border-bottom:#C7C7C4 solid 3px;
-}
-
-#photogramLabel {
-  font-family: Monotype Corsiva;
-  font-size: 50px;
-  text-align: center;
-}
-
-#mainBox {
-  float: right;
-  width: 400px;
-  height: 500px;
-  border-top: #C7C7C4;
-  border-right: #C7C7C4;
-  border-left: #9C9C9A;
-  border-bottom:#C7C7C4 solid 3px;
-}
-
-#login_button, #register_button {
-  width: 100px;
+footer{
   height: 50px;
-  border-radius: 5px;
+  margin-top: -50px;
 }
 
-#register_button {
-  background-color: #1ADF23;
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
 }
 
-#login_button {
-  float: right;
-  background-color: #2A9DD1;
+.img-size {
+  width: 60px;
+  height: 60px;
 }
 
-/*------------------------------
-NEW USER REGISTRATION PAGE
---------------------------------*/
-#new_user {
-  background-color: #F4F0DF;
-  align-content: center;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 50px;
-  padding-right: 50px;
+.profilePic {
+  width: 120px;
+  height: 185px;
 }
 
-#newUserFormBox {
-  width: 500px;
-  height: 1000px;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  padding-left: 30px;
-  padding-right: 30px;
-  border-top: #C7C7C4;
-  border-right: #C7C7C4;
-  border-left: #9C9C9A;
-  border-bottom:#C7C7C4 solid 3px;
+.postPics {
+  width: 350px;
+  height: 200px;
 }
 
-#registerButton, #username, #password, #first_name, #last_name, #email, #location {
-  width: 300px;
-  height: 50px;
-  border-radius: 5px;
+.card-footer {
+  display: flex;
+  justify-content: space-between;
 }
 
-#registerButton {
-  background-color: #1ADF23;
+i, .like, .clickable {
+  cursor: pointer;
 }
 
-#biography {
-  width: 300px;
-  height: 100px;
+.title{
+  font-family: 'Lobster', cursive;
 }
 
-
-/*------------------------------
-EXPLORE PAGE
-------------------------------*/
-#explore {
-  background-color: #F4F0DF;
-  align-content: center;
+.icon{
+  color: #000;
 }
 
-#user_name {
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-top: 2px;
-  padding-bottom: 2px;
+.btn-color{
+  background-color: #85cb33;
+  color: #fff;
 }
 
-#profilePic {
-  width: 10px;
-  height: 10px;
+.border-col{
+  border: 1px solid #aeb6bf ;  
 }
 
-#imagePosted {
-  width: 500px;
-  height: 350px;
-}
-
-#imageCaption {
-  text-align: justify;
-}
-
-#likeIcon {
-  width: 8px;
-  height: 8px;
-}
-
-#datePosted {
-  float: right;
-}
-
-#user_name, #datePosted {  
-  font-weight: bold;
-}
-
-#new_postButton {
-  background-color: #2A9DD1;
-  border-radius: 5px;
-}  
-
-#exploreMainBox {
-  width: 500px;
-  height: 700px;
-}
-
-#rightButtonDiv {
-  float: right;
-}
-
-
-/*------------------------------
-USER PROFILE PAGE
-------------------------------*/
-#user_profile {
-  background-color: #F4F0DF;
-}
-
-
-/*------------------------------
-NEW POST PAGE
-------------------------------*/
-#caption {
-  width: 300px;
-  height: 90px;
-  border-radius: 5px;
-}
-
-#new_post {
-  background-color: #F4F0DF;
-  align-content: center;
-}
-
-#newPostSubmitButton {
-  background-color: #1ADF23;
-  border-radius: 5px;
-  height: 50px;
-  width: 300px;
-}
-
-#newPostFormBox {
-  width: 400px;
-  height: 500px;
-  border-top: #C7C7C4;
-  border-right: #C7C7C4;
-  border-left: #9C9C9A;
-  border-bottom:#C7C7C4 solid 3px;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  padding-left: 30px;
-  padding-right: 30px;
+.shadow{
+  box-shadow: 0 2px 3px #aaaaaa;
 }
