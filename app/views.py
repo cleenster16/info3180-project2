@@ -86,8 +86,9 @@ def login():
         username = form.username.data
         password = form.password.data
 
-        user = db.session.query(Users).filter_by(username = username).first()
-        if check_password_hash(user.password, password):
+        user = db.session.query(Users).filter_by(username=username).first()
+        # if check_password_hash(user.password, password):
+        if (user.password == password):
             login_user(user)
 
             ids = {'user' : user.username}

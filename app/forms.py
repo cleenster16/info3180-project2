@@ -5,10 +5,10 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(message="Enter username")])
-    password = PasswordField('Password', validators=[InputRequired(message="Enter password")])
+    password = PasswordField('Password', validators=[InputRequired()])
 
 class PostsForm(FlaskForm):
-    photo = FileField('Photo', FileRequired("Please add a file"), FileAllowed(['png', 'jpg'], 'Images only!'))
+    photo = FileField('Photo', validators=[FileRequired("Please add a file"), FileAllowed(['png', 'jpg'], 'Images only!')])
     caption = TextAreaField('Caption', validators=[InputRequired()])
     submit = SubmitField("Submit")
 

@@ -232,6 +232,10 @@ const registerPage = Vue.component('register', {
 // });
 
 
+function myFunction() {
+  console.log(document.getElementById('passworddata').value);
+  console.log(document.getElementById('usernamedata').value);
+}
 
 const loginPage = Vue.component('login', {
     template: `
@@ -250,11 +254,11 @@ const loginPage = Vue.component('login', {
                     <form id="loginForm" method="post" @submit.prevent="login" class="col-md-12" style="padding: 15px 15px 30px 15px;">
                         <div class="form-group">
                             <label class="font-weight-bold"> Username or Email</label>
-                            <input type="text" name="username" class="form-control">
+                            <input type="text" name="username" class="form-control" id="usernamedata">
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold"> Password </label>
-                            <input type="password" name="password" class="form-control">
+                            <input type="password" name="password" class="form-control" id="passworddata" >
                         </div>
                             <input type="submit" value="Login" name="login" class="btn btn-color btn-block font-weight-bold">
                         </form>
@@ -262,11 +266,15 @@ const loginPage = Vue.component('login', {
                 </div>
         </div>
   `,
+  
     methods:{
         login: function(){
             let self = this;
-            let loginForm = document.getElementsById('loginForm');
+            let loginForm = document.getElementById('loginForm');
             let form_data = new FormData(loginForm);
+
+
+            
 
             fetch("/api/auth/login",{
                 method: 'POST',
@@ -281,7 +289,7 @@ const loginPage = Vue.component('login', {
             })
             .then(function(jsonResponse){
                 console.log(jsonResponse);
-                if(jsonResponse.hadOwnProperty('token')){
+                if(jsonResponse.hasOwnProperty('token')){
                     let jwt_token = jsonResponse.token;
                     let id = jsonResponse.user_id;
 
