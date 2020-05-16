@@ -180,6 +180,64 @@ const registerPage = Vue.component('register', {
 });
 
 const loginPage = Vue.component('login', {
+    
+});
+
+// const newPostPage = Vue.component('new_post', {
+//     template: `
+//     <div id="new_post">
+//         <h2>New Post<h2><br>
+//         <div id="newPostFormBox">
+//             <form id="newPostForm">
+//                 <label>Photo</label>
+//                 <input id="photo" type="file"></input><br><br>
+//                 <label>Caption</label>
+//                 <input id="caption" type="text" placeholder="Write a caption..."></input><br><br>
+//                 <button id="newPostSubmitButton" type="submit" name="login">Submit</button>
+//             </form>
+//         </div>
+//     </div>
+//     `,
+    
+//     data : function(){
+//       return {
+//         error: null,
+//         visible: false
+//       }
+//     },
+    
+//     methods : {
+//       post : function(){
+//         let self = this;
+//         let postForm = document.getElementById('post-form');
+//         let form_data = new FormData(postForm);
+//         fetch("/api/users/" + this.$parent.userID + "/posts", {
+//         method: 'POST',
+//         body : form_data,
+//         headers: {
+//             'X-CSRFToken': token,
+//             'Authorization': 'Bearer ' + localStorage.getItem('token')
+//             },
+//             credentials: 'same-origin'
+//         })
+//         .then(function (response) {
+//             return response.json();
+//         })
+//         .then(function (jsonResponse) {
+//         // display a success message
+//           if (jsonResponse.error == true) {self.error = jsonResponse.message;}
+//           console.log(jsonResponse);
+//         })
+//         .catch(function (error) {
+//             console.log(error);
+//         });
+//       }
+//     }
+// });
+
+
+
+const registerPage = Vue.component('/register', {
     template: `
         <div style="display:flex; justify-content: center;">
             <div style="width: 800px; margin: 0 350px 0 350px;">
