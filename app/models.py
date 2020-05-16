@@ -7,20 +7,20 @@ class Users(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(250), nullable=False)
-    firstname = db.Column(db.String(80), nullable=False)
-    lastname = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(80), unique=True, nullable=False)
-    location = db.Column(db.String(80), nullable=False)
-    biography = db.Column(db.Text, nullable=False)
-    profile_photo = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    firstname = db.Column(db.String(250), nullable=False)
+    lastname = db.Column(db.String(250), nullable=False)
+    email = db.Column(db.String(250), unique=True, nullable=False)
+    location = db.Column(db.String(250), nullable=False)
+    biography = db.Column(db.String(1000), nullable=False)
+    profile_photo = db.Column(db.String(200), nullable=False)
     joined_on = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
     posts = db.relationship('Posts', backref='user', passive_deletes=True, lazy=True)
     likes = db.relationship('Likes', backref='user', passive_deletes=True, lazy=True)
     followers = db.relationship('Follows', backref='user', passive_deletes=True, lazy=True)
 
-    def __init__(self, username, password, firstname, lastname, email, location, biography, profile_photo)
+    def __init__(self, username, password, firstname, lastname, email, location, biography, profile_photo):
         self.username = username
         self.password = password
         self.firstname = firstname
@@ -49,10 +49,10 @@ class Users(db.Model):
         return '<User %r>' % (self.username)
 
 class Posts(db.Model):
-    __tablename = "Posts"
+    __tablename__ = "Posts"
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'),nullable=False)
     photo = db.Column(db.String(80), nullable=False)
     caption = db.Column(db.String(250), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.now(), nullable=False)
@@ -75,8 +75,8 @@ class Likes(db.Model):
     __table_args__ = (db.UniqueConstraint('user_id', 'post_id', name='_user_post_'), )
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('Posts.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('Posts.id', ondelete='CASCADE'), nullable=False)
 
     def __init__(self, user_id, post_id):
         self.user_id = user_id
@@ -93,7 +93,7 @@ class Follows(db.Model):
     __table_args__ = (db.UniqueConstraint('user_id', 'follower_id', name='__user_follower__'), )
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'), nullable=False)
     follower_id = db.Column(db.Integer, nullable=False)
     def __init__(self, follower_id, user_id):
         self.follower_id = follower_id

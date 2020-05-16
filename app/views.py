@@ -1,5 +1,5 @@
 import os
-from app import app, db, filefolder, token_key, iconFolder, login_manager
+from app import app, db, filefolder, iconFolder, login_manager
 from app.models import Posts, Users, Likes, Follows
 from app.forms import LoginForm, RegistrationForm, PostsForm
 import datetime
@@ -7,6 +7,8 @@ from flask import g, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
+from functools import wraps
+import base64
 
 import jwt
 
@@ -26,15 +28,14 @@ def auth_required(f):
          
         token = sections[1]
         try:
-             ids = jwt.decode(token, token_key)
-             get_user_info = Users.query.filter_by(id=ids['user_id']).first()
+            ids = jwt.decode(token, app.config['SECRET_KEY'])
 
         except jwt.ExpiredSignature:
             return jsonify({'code': 'expired_token', 'description': 'Your token is expired'}), 401
         except jwt.DecodeError:
             return jsonify({'code': 'token_invalid_signature', 'description': 'Token signature is invalid'}), 401
 
-        g.current_user = user = ids['user_id']
+        g.current_user = user = ids
         return f(*args, **kwargs)
     return decorated
 
@@ -59,13 +60,13 @@ def register():
         photoPath = assignFilename(photo)
 
         try:
-            user = Users(username, password, firstname, lastname, email, location, biography, photo, joined_on)
+            user = Users(username, password, firstname, lastname, email, location, biography, photoPath)
             if user is not None:
                 db.session.add(user)
                 db.session.commit()
                 uploadFile(photo)
                 info = [{"message": "User successfully registered"}]
-                return jsonify(result=info) 201
+                return jsonify(result=info), 201
 
         except Exception as e:
             print(e)
@@ -108,7 +109,7 @@ def logout():
     success = "User successfully logged out."
     return jsonify(message=success)
 
-@app.route('api/users/<user_id>', methods=['GET'])
+@app.route('/api/users/<user_id>', methods=['GET'])
 @auth_required
 def userProfile(user_id):
     try:
@@ -128,14 +129,14 @@ def userProfile(user_id):
         error = "internal server error"
         return jsonify(error=error), 401
 
-@app.route('api/users/<user_id>/posts', methods=['POST','GET'])
+@app.route('/api/users/<user_id>/posts', methods=['POST','GET'])
 @auth_required
 def userPosts(user_id):
     form = PostsForm()
     if request.method == "POST" and form.validate_on_submit() == True:
         try:
             caption = form.caption.data
-            photo = assignPath(form.photo.data)
+            photo = assignFilename(form.photo.data)
             post = Posts(user_id, photo, caption)
             db.session.add(post)
             db.session.commit()
@@ -156,7 +157,7 @@ def userPosts(user_id):
             
             posts = []
             for post in userPosts:
-                p = {"id": post.id, "user_id": post.user_id, "photo": './static/uploads', post.photo), "description": post.caption, "created_on": post.created_on.strftime("%d %b %Y")}
+                p = {"id": post.id, "user_id": post.user_id, "photo": os.join('./static/uploads', post.photo), "description": post.caption, "created_on": post.created_on.strftime("%d %b %Y")}
                 posts.append(p)
             
             return jsonify(posts=posts)
@@ -170,7 +171,7 @@ def userPosts(user_id):
     failure = "Failed to create/display posts"
     return jsonify(error=failure), 401
 
-@app.route('api/users/<user_id>/follow', methods=['POST', 'GET'])
+@app.route('/api/users/<user_id>/follow', methods=['POST', 'GET'])
 @auth_required
 def userFollows(user_id):
     if request.method == 'POST':
@@ -199,7 +200,7 @@ def userFollows(user_id):
             error = "Internal server error!"
             return jsonify(error=error), 401
 
-@app.route('api/posts', methods=['GET'])
+@app.route('/api/posts', methods=['GET'])
 @auth_required
 def allPosts():
     try:
@@ -220,7 +221,7 @@ def allPosts():
         return jsonify(error=error), 401
 
 @app.route("/api/posts/<post_id>/like", methods=["POST"])
-@requires_auth
+@auth_required
 def likePost(post_id):
     post = db.session.query(Posts).filter_by(id=post_id).first()
     if current_user.is_authenticated():
@@ -244,12 +245,19 @@ def assignFilename(_file):
     return filename
 
 #Save a file to the uploads folder
-def uploadFile(_file):
-    _file.save(os.path.join(app.config['UPLOAD_FOLDER'], securefilename(_file)))
+def uploadFile(upload):
+    filename = secure_filename(upload.filename)
+    upload.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
+# user_loader callback. This callback is used to reload the user object from
+# the user ID stored in the session
+@login_manager.user_loader
+def load_user(id):
+    return db.session.query(Users).get(int(id))
+
 def form_errors(form):
     error_messages = []
     """Collects form errors"""
