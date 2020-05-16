@@ -179,10 +179,6 @@ const registerPage = Vue.component('register', {
     }
 });
 
-const loginPage = Vue.component('login', {
-    
-});
-
 // const newPostPage = Vue.component('new_post', {
 //     template: `
 //     <div id="new_post">
@@ -237,7 +233,7 @@ const loginPage = Vue.component('login', {
 
 
 
-const registerPage = Vue.component('/register', {
+const loginPage = Vue.component('login', {
     template: `
         <div style="display:flex; justify-content: center;">
             <div style="width: 800px; margin: 0 350px 0 350px;">
