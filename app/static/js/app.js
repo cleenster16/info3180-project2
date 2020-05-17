@@ -1,4 +1,3 @@
-// let event = new Vue();
 Vue.component('app-header', {
   template: `
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
@@ -27,7 +26,6 @@ Vue.component('app-header', {
       </div>
     </nav>
     `,
-
   data: function () {
     return {
       id: localStorage.current_user
@@ -568,7 +566,6 @@ const profilePage = Vue.component('user', {
         </div>
       </div>
     </div>
-  
     <ul class="row list-inline">
       <li class="col-sm-4" v-for="post in userposts">
         <div class="card-body no-padding">

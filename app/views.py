@@ -1,4 +1,5 @@
 import os
+
 from app import app, db, filefolder, iconFolder, login_manager
 from app.models import Posts, Users, Likes, Follows
 from app.forms import LoginForm, RegistrationForm, PostsForm
@@ -268,7 +269,6 @@ def form_errors(form):
                     error
                 )
             error_messages.append(message)
-
     return error_messages
 
 @app.route('/<file_name>.txt')
