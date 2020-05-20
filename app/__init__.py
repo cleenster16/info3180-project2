@@ -4,8 +4,8 @@ from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "change this to be a more random key"
-app.config['SQLALCHEMY_DATABASE_URI'] ="postgres://jqyzpgyfgrthyj:6e0248d63356c973a2ea97b51825d7ebdc76958f768ab097e189e234b11854d5@ec2-52-44-166-58.compute-1.amazonaws.com:5432/dii1eoh1ev7q6"
+app.config['SECRET_KEY'] = "changethistobeamorerandomkey"
+#app.config['SQLALCHEMY_DATABASE_URI'] ="postgres://jqyzpgyfgrthyj:6e0248d63356c973a2ea97b51825d7ebdc76958f768ab097e189e234b11854d5@ec2-52-44-166-58.compute-1.amazonaws.com:5432/dii1eoh1ev7q6"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['UPLOAD_FOLDER'] = './app/static/uploads'
 app.config['ICONS_FOLDER'] = '.app/static/icons'
