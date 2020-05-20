@@ -1,5 +1,4 @@
 import os
-
 from app import app, db, filefolder, iconFolder, login_manager
 from app.models import Posts, Users, Likes, Follows
 from app.forms import LoginForm, RegistrationForm, PostsForm
@@ -88,6 +87,7 @@ def login():
         password = form.password.data
 
         user = db.session.query(Users).filter_by(username=username).first()
+
         if check_password_hash(user.password, password):
             login_user(user)
 
@@ -158,7 +158,7 @@ def userPosts(user_id):
             
             posts = []
             for post in userPosts:
-                p = {"id": post.id, "user_id": post.user_id, "photo": os.join('./static/uploads', post.photo), "description": post.caption, "created_on": post.created_on.strftime("%d %b %Y")}
+                p = {"id": post.id, "user_id": post.user_id, "photo": os.path.join('./static/uploads', post.photo), "description": post.caption, "created_on": post.created_on.strftime("%d %b %Y")}
                 posts.append(p)
             
             return jsonify(posts=posts)

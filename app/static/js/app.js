@@ -17,7 +17,7 @@ Vue.component('app-header', {
             <router-link to="/explore" class="nav-link">Explore</router-link>
           </li>
           <li class="nav-item">
-            <span @click="showMyProfile" class="nav-link">My Profile</span>
+            <span @click="showMyProfile" class="nav-link" style="cursor:pointer;" >My Profile</span>
           </li>
           <li class="nav-item">
             <router-link to="/logout" class="nav-link">Logout</router-link>
@@ -28,12 +28,12 @@ Vue.component('app-header', {
     `,
   data: function () {
     return {
-      id: localStorage.current_user
+      id: sessionStorage.current_user
     };
   },
   methods: {
     showMyProfile() {
-      let id = localStorage.getItem('current_user');
+      let id = sessionStorage.getItem('current_user');
       router.push(`/users/${id}`);
     }
   }
@@ -159,9 +159,9 @@ const registerPage = Vue.component('register', {
             self.message = jsonResponse.error;
             this.success = false;
           } else {
-            if (jsonResponse.hasOwnProperty("message")) {
-              router.push({ name: 'login', params: { notifs: jsonResponse.message, success: true } });
-            }
+           if (jsonResponse.hasOwnProperty("result")) {
+            router.push({ name: 'login', params: { notifs: jsonResponse.message, success: true } });
+           }
           }
         })
         .catch(function (error) {
@@ -229,8 +229,8 @@ const loginPage = Vue.component('login', {
             let jwt_token = jsonResponse.token;
             let id = jsonResponse.user_id;
 
-            localStorage.setItem('token', jwt_token);
-            localStorage.setItem('current_user', id);
+            sessionStorage.setItem('token', jwt_token);
+            sessionStorage.setItem('current_user', id);
 
             router.push('/explore');
           } else {
@@ -254,6 +254,7 @@ const loginPage = Vue.component('login', {
 });
 
 const logoutPage = Vue.component('logout', {
+  template: `<div></div>`,
   created: function () {
     fetch('api/auth/logout', {
       methiod: 'GET'
@@ -263,9 +264,9 @@ const logoutPage = Vue.component('logout', {
       })
       .then(function (jsonResponse) {
         console.log(jsonResponse);
-        localStorage.removeItem('token');
-        localStorage.removeItem('current_user');
-        console.info('Token and current user removed from localStorage');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('current_user');
+        console.info('Token and current user removed from sessionStorage');
 
         router.push({ name: 'home', params: { notifs: jsonResponse.message, success: true } });
       })
@@ -306,7 +307,7 @@ const explorePage = Vue.component('explore', {
     fetch("/api/posts", {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${localStorage.token}`,
+        'Authorization': `Bearer ${sessionStorage.token}`,
         'X-CSRFToken': token
       },
       credentials: 'same-origin'
@@ -345,7 +346,7 @@ const explorePage = Vue.component('explore', {
         fetch(`/api/users/${post.user_id}`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${localStorage.token}`
+            'Authorization': `Bearer ${sessionStorage.token}`
           },
           credentials: 'same-origin'
         })
@@ -367,7 +368,7 @@ const explorePage = Vue.component('explore', {
       fetch(`/api/users/${post.user_id}`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${localStorage.token}`
+          'Authorization': `Bearer ${sessionStorage.token}`
         },
         credentials: 'same-origin'
       })
@@ -388,7 +389,7 @@ const explorePage = Vue.component('explore', {
       fetch(`/api/posts/${postId}/like`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
+          'Authorization': `Bearer ${sessionStorage.token}`,
           'X-CSRFToken': token
         },
         credentials: 'same-origin'
@@ -414,7 +415,7 @@ const explorePage = Vue.component('explore', {
       posts: [],
       message: '',
       valid: false,
-      id: localStorage.current_user
+      id: sessionStorage.current_user
     };
   }
 });
@@ -447,7 +448,7 @@ const PostHeader = Vue.component('post-header', {
     fetch(`/api/users/${self.user_id}`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${localStorage.token}`
+        'Authorization': `Bearer ${sessionStorage.token}`
       },
       credentials: 'same-origin'
     }).then(resp => resp.json()).then(data => {
@@ -491,7 +492,7 @@ const PostFooter = Vue.component('post-footer', {
       fetch(`/api/posts/${self.postId}/like`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
+          'Authorization': `Bearer ${sessionStorage.token}`,
           'X-CSRFToken': token
         },
         credentials: 'same-origin'
@@ -577,14 +578,14 @@ const profilePage = Vue.component('user', {
     `,
   created: function () {
     let self = this;
-    let current_user = localStorage.getItem('current_user');
+    let current_user = sessionStorage.getItem('current_user');
     self.isUser = current_user === self.$route.params.user_id;
 
 
     fetch(`/api/users/${self.$route.params.user_id}/posts`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${localStorage.token}`
+        'Authorization': `Bearer ${sessionStorage.token}`
       },
       credentials: 'same-origin'
     })
@@ -622,7 +623,7 @@ const profilePage = Vue.component('user', {
       fetch(`/api/users/${uid}`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${localStorage.token}`
+          'Authorization': `Bearer ${sessionStorage.token}`
         },
         credentials: 'same-origin'
       })
@@ -641,7 +642,7 @@ const profilePage = Vue.component('user', {
       fetch(`/api/users/${id}/follow`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${localStorage.token}`
+          'Authorization': `Bearer ${sessionStorage.token}`
         },
         credentials: 'same-origin'
       })
@@ -659,7 +660,7 @@ const profilePage = Vue.component('user', {
       fetch(`/api/users/${self.$route.params.user_id}/follow`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
+          'Authorization': `Bearer ${sessionStorage.token}`,
           'X-CSRFToken': token
         },
         credentials: 'same-origin'
@@ -715,11 +716,11 @@ const newPostPage = Vue.component('new-post', {
       let postForm = document.getElementById('postForm');
       let form_data = new FormData(postForm);
 
-      fetch(`/api/users/${localStorage.current_user}/posts`, {
+      fetch(`/api/users/${sessionStorage.current_user}/posts`, {
         method: 'POST',
         body: form_data,
         headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
+          'Authorization': `Bearer ${sessionStorage.token}`,
           'X-CSRFToken': token
         },
         credentials: 'same-origin'
