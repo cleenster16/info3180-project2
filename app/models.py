@@ -16,9 +16,9 @@ class Users(db.Model):
     profile_photo = db.Column(db.String(200), nullable=False)
     joined_on = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
-    posts = db.relationship('Posts', backref='user', passive_deletes=True, lazy=True)
-    likes = db.relationship('Likes', backref='user', passive_deletes=True, lazy=True)
-    followers = db.relationship('Follows', backref='user', passive_deletes=True, lazy=True)
+    posts = db.relationship('Posts', backref='user', passive_deletes=True, lazy=True cascade="all")
+    likes = db.relationship('Likes', backref='user', passive_deletes=True, lazy=True cascade="all")
+    followers = db.relationship('Follows', backref='user', passive_deletes=True, lazy=True cascade="all")
 
     def __init__(self, username, password, firstname, lastname, email, location, biography, profile_photo):
         self.username = username
@@ -52,7 +52,7 @@ class Posts(db.Model):
     __tablename__ = "Posts"
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'),nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'),nullable=False)
     photo = db.Column(db.String(80), nullable=False)
     caption = db.Column(db.String(250), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.now(), nullable=False)
