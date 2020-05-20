@@ -512,7 +512,7 @@ const Post = Vue.component('post', {
   template: `
     <div class=" card col-md-7 mb-5 bg-white rounded-lg no-padding mr-auto border-col">
       <post-header v-bind:user_id='post.user_id'></post-header>
-      <img :src=post.photo class="card-img-top" alt="Picture posted by the user">
+      <img :src='post.photo' class="card-img-top" alt="Picture posted by the user">
       <div class="card-body text-muted">
         <small> {{ post.caption }}</small>
       </div>
