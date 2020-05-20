@@ -254,6 +254,7 @@ const loginPage = Vue.component('login', {
 });
 
 const logoutPage = Vue.component('logout', {
+  template: `<div></div>`,
   created: function () {
     fetch('api/auth/logout', {
       methiod: 'GET'
@@ -421,7 +422,7 @@ const explorePage = Vue.component('explore', {
 
 const PostHeader = Vue.component('post-header', {
   template: `
-    <div atyle="border-bottom: 1px solid gray" class="d-flex flex-row justify-content-start align-items-center p-2 bg-white">
+    <div style="border-bottom: 1px solid gray" class="d-flex flex-row justify-content-start align-items-center p-2 bg-white">
       <router-link :to="profileUrl">
         <img :src="imgUrl" class="img-size rounded-circle d-inline-block">
         <p class="text-muted font-weight-bold d-inline-block ml-1">{{ username }}</p>

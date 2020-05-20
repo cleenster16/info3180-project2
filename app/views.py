@@ -158,7 +158,7 @@ def userPosts(user_id):
             
             posts = []
             for post in userPosts:
-                p = {"id": post.id, "user_id": post.user_id, "photo": os.join('./static/uploads', post.photo), "description": post.caption, "created_on": post.created_on.strftime("%d %b %Y")}
+                p = {"id": post.id, "user_id": post.user_id, "photo": os.path.join('./static/uploads', post.photo), "description": post.caption, "created_on": post.created_on.strftime("%d %b %Y")}
                 posts.append(p)
             
             return jsonify(posts=posts)
