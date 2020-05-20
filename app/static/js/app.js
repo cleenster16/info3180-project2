@@ -421,7 +421,7 @@ const explorePage = Vue.component('explore', {
 
 const PostHeader = Vue.component('post-header', {
   template: `
-    <div atyle="border-bottom: 1px solid gray" class="d-flex flex-row justify-content-start align-items-center p-2 bg-white">
+    <div style="border-bottom: 1px solid gray" class="d-flex flex-row justify-content-start align-items-center p-2 bg-white">
       <router-link :to="profileUrl">
         <img :src="imgUrl" class="img-size rounded-circle d-inline-block">
         <p class="text-muted font-weight-bold d-inline-block ml-1">{{ username }}</p>
@@ -511,7 +511,7 @@ const Post = Vue.component('post', {
   template: `
     <div class=" card col-md-7 mb-5 bg-white rounded-lg no-padding mr-auto border-col">
       <post-header v-bind:user_id='post.user_id'></post-header>
-      <img :src=post.photo class="card-img-top" alt="Picture posted by the user">
+      <img v-bind:src="post.photo" class="card-img-top" alt="Picture posted by the user">
       <div class="card-body text-muted">
         <small> {{ post.caption }}</small>
       </div>

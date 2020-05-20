@@ -209,7 +209,7 @@ def allPosts():
         userPosts = db.session.query(Posts).order_by(Posts.created_on.desc()).all()
     
         for post in userPosts:
-
+            user = db.session.query(Users).filter_by(Users.user_id).first()
             likes = [like.user_id for like in post.likes]
             isLiked = current_user.id in likes
             p = {"id": post.id, "user_id": post.user_id, "photo": os.path.join('./static/uploads', post.photo), "caption": post.caption, "created_on": post.created_on.strftime("%d %b %Y"), "likes": len(post.likes), "isLiked": isLiked}
